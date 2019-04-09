@@ -3,6 +3,7 @@
 import os
 import os.path
 import re
+import sys
 
 
 # 正则匹配文件名，失败返回 0，成功返回文件名字符串
@@ -56,9 +57,9 @@ def modify_file(parent, filename):
         fp.close()
 
 
-def modify_all_test_files():
+def modify_all_test_files(dir):
     #三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-    for parent, dirnames, filenames in os.walk("./tt"):
+    for parent, dirnames, filenames in os.walk(dir):
         for filename in filenames:
             modify_file(parent, filename)
 
@@ -70,7 +71,7 @@ def modify_all_test_files():
 # 重命名文件
 
 
-def create_test_files():
+def create_test_files(dir):
     file_content = """
 document.write("<p align=center style='FONT-SIZE:13.5pt;font-family:宋体'><b><a name='%(maj)d-%(naj)d'>测试标题%(num)d</b><p>");
 
@@ -85,9 +86,11 @@ document.write('<p><p>afssssssssssfafasdasd<p><p>')
                 fp.close()
 
 
-flag = 0
+print(sys.argv)
 
-if flag == 1:
-    create_test_files()
-else:
-    modify_all_test_files()
+flag = sys.argv[2]
+
+if flag == 'c':
+    create_test_files(sys.argv[1])
+elif flag == 'm':
+    modify_all_test_files(sys.argv[1])
